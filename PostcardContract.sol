@@ -1,7 +1,4 @@
 pragma solidity ^0.4.21;
-pragma experimental ABIEncoderV2;
-
-//enable experimental ABIEncoderV2 for return type as struct
 contract PostcardContract {
 
 
@@ -38,16 +35,15 @@ contract PostcardContract {
         cards.push(card);
     }
 
-    function openCard() public view onlymanager returns(Postcard){
+    function openCard() public view onlymanager returns(string,string,string,string){
         uint index=random()%cards.length;
-        return cards[index];
+        return (cards[index].username, cards[index].content, cards[index].ip, cards[index].timestamp);
     }
 
     function random() private view returns (uint) {
         //sha3 is also a global function
         //block is global variable that we can access any time
         //now is also global
-        // keccak256 doesn't support struct type https://ethereum.stackexchange.com/questions/40151/solidity-unimplementedfeatureerror-only-in-memory-reference-type-can-be-stored
         return uint(keccak256(block.difficulty, now, cards.length));
     }
 }
